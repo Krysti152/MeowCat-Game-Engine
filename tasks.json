@@ -1,0 +1,50 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "kompiluj",
+			"command": "/usr/bin/g++",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-c",
+				"${file}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "kompilator: /usr/bin/g++"
+		},
+		{
+			"type": "shell",
+			"label": "buduj",
+			"command": "/usr/bin/g++",
+			"args": [
+				"${fileDirname}/${fileBasenameNoExtension}.o",
+				"-o",
+				"app",
+				"-lsfml-graphics",
+				"-lsfml-window", 
+				"-lsfml-system"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "kompilator: /usr/bin/g++",
+			"dependsOn": [
+				"kompiluj"
+			]
+		}
+	]
+}
