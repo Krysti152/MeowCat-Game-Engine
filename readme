@@ -1,0 +1,9 @@
+MeowCat Game Engine is using c++ and SFML.
+Don't claim that you are creator of software.
+Copyright by Krystian Mrukot
+
+1. Always run those scripts in their directory to run properly.
+2. Run install.sh to install engine.
+3. Run manager.sh to make new project quickly.
+4. tasks.json is configured file for Visual Studio to fast compile and build app (output is "app" file).
+5. Have fun.

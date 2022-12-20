@@ -2,6 +2,12 @@
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <map>
+
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Main.hpp>
 
 using namespace std;
 
@@ -73,6 +79,8 @@ namespace gm {
             x,y *= __val;
         }
 
+        
+
 
 
         Vector2() {
@@ -120,6 +128,30 @@ namespace gm {
 
     Vector3::~Vector3()
     {
+    }
+
+        void print(string __msg) {
+        cout<<__msg<<endl;
+    }
+    void print(Vector2 __msg) {
+        for (int i = 0; i<2; i++) {
+            std::cout<<'['<<__msg.x<<", "<<__msg.y<<']'<<std::endl;
+        }
+    }
+
+    float distance(Vector2 a, Vector2 b) {
+        return (float) abs(a.x - b.x) + abs(a.y - b.y);
+    }
+
+
+    float vector_len(Vector2 __vec) {
+        return sqrt(pow(__vec.x,2) + pow(__vec.y,2));
+    }
+
+    Vector2 normalize(Vector2 __vec) {
+
+        return Vector2(__vec.x/vector_len(__vec), __vec.y/vector_len(__vec));
+        
     }
 
 
@@ -319,29 +351,65 @@ namespace gm {
         }
     }
 
-    void print(string __msg) {
-        cout<<__msg<<endl;
-    }
-    void print(Vector2 __msg) {
-        for (int i = 0; i<2; i++) {
-            std::cout<<'['<<__msg.x<<", "<<__msg.y<<']'<<std::endl;
-        }
-    }
 
-    float distance(Vector2 a, Vector2 b) {
-        return (float) abs(a.x - b.x) + abs(a.y - b.y);
-    }
+    class Input {
+        private:
+            Vector2 dir = {0,0};
+            map<string, float> Axis = {
+                        {"Horizontal", 0},
+                        {"Vertical", 0},
+                        {"Jump", 0},
+                        {"Crouch", 0},
+                        {"Sprint", 0},
+                        {"Action", 0},
+                        {"MouseLeft", 0},
+                        {"MouseMiddle", 0},
+                        {"MouseRight", 0}
+                    };
+        public:
 
+            void update() {
+                int left = 0;
+                int right = 0;
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+                    left = 1;
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+                    right = 1;
+                };
 
-    float vector_len(Vector2 __vec) {
-        return sqrt(pow(__vec.x,2) + pow(__vec.y,2));
-    }
+                int up = 0;
+                int down = 0;
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+                    up = 1;
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+                    down = 1;
+                };
 
-    Vector2 normalize(Vector2 __vec) {
+                
 
-        return Vector2(__vec.x/vector_len(__vec), __vec.y/vector_len(__vec));
-        
-    }
+                Axis["Horizontal"] = right - left;
+                Axis["Vertical"] = up - down;
+                Axis["Jump"] = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+                Axis["Crouch"] = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl);
+                Axis["Sprint"] = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
+                Axis["Action"] = sf::Keyboard::isKeyPressed(sf::Keyboard::E);
+                Axis["MouseLeft"] = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+                Axis["MouseMiddle"] = sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle);
+                Axis["MouseRight"] = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
+            }
+            Vector2 getNormDir() {
+                return normalize(dir);
+            }
+            Vector2 getDir() {
+                return dir;
+            }
+            float getAxis(string __name) {
+                return Axis[__name];
+            }
+
+    };
 
 
 

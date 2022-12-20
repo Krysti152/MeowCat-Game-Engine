@@ -1,7 +1,4 @@
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Main.hpp>
+
 
 #include <chrono>
 #include <thread>
@@ -43,6 +40,7 @@ namespace gm {
         sf::RenderWindow *window_ptr;
         vector<GameObject> objects;
         vector<vector<sf::Sprite>> layers;
+        Input input;
         Game();
         ~Game();
 	//Returns true if game is running.
@@ -144,6 +142,7 @@ namespace gm {
     }
     void Game::update() {
         frames++;
+        input.update();
         //cout<<"update "<<frames<<endl;
         //for (int i = 0; i < objects.size();i++) {
         //    this -> objects[i].update();
@@ -155,19 +154,35 @@ namespace gm {
 
 
     void Game::setResolution(int x, int y) {
-        this -> scr_width = x;
-        this -> scr_height = y;
+        if (!isRunning()) {
+            this -> scr_width = x;
+            this -> scr_height = y;
 
-        video_mode = sf::VideoMode(x,y);
+            video_mode = sf::VideoMode(x,y);
+        } else {
+            print("Game is running.");
+        }
     }
     void Game::setFullScreen(bool b) {
+        if (!isRunning()) {
         this -> full_scr = b;
+        } else {
+            print("Game is running.");
+        }
     }
     void Game::setFrameRate(float f) {
-        this -> frame_rate = f;
+        if (!isRunning()) {
+            this -> frame_rate = f;
+        } else {
+            print("Game is running.");
+        }
     }
     void Game::setName(string name) {
-        this -> game_name = name;
+        if (!isRunning()) {
+            this -> game_name = name;
+        } else {
+            print("Game is running.");
+        }
     }
 
 
